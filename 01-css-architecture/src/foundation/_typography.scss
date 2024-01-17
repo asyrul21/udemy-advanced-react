@@ -1,0 +1,23 @@
+/****************************
+* Gloabl App Typography
+* use var() to give a default but enable overriding
+*/
+// body font sizes
+$body-font-size: var(--dse-body-font-size, $fs-sm) !default;
+$body-font-weight: var(--dse-body-font-weight, $fw-normal) !default;
+
+// heading font sizes
+$h1-font-size: size(--dse-h1-font-size, $h-1) !default;
+$h2-font-size: size(--dse-h2-font-size, $h-2) !default;
+$h3-font-size: size(--dse-h3-font-size, $h-3) !default;
+$h4-font-size: size(--dse-h4-font-size, $h-4) !default;
+$h5-font-size: size(--dse-h5-font-size, $h-5) !default;
+$h6-font-size: size(--dse-h6-font-size, $h-6) !default;
+
+// font weights
+$h1-font-weight: size(--dse-h1-text-weight, $fw-black) !default;
+$h2-font-weight: size(--dse-h2-text-weight, $fw-semibold) !default;
+$h3-font-weight: size(--dse-h3-text-weight, $fw-bold) !default;
+$h4-font-weight: size(--dse-h4-text-weight, $fw-medium) !default;
+$h5-font-weight: size(--dse-h5-text-weight, $fw-normal) !default;
+$h6-font-weight: size(--dse-h6-text-weight, $fw-light) !default;
