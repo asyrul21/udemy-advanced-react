@@ -1,6 +1,6 @@
 */**/node_modules
-08-laravel-nginx-app/src
-09-deployment-aws/keys
+*/**/dist
+
 *.pem
 
 .DS_Store

@@ -1,6 +1,6 @@
 # Advanced React Guide
 
-Based on [Advanced React for Enterprise: React for Senior Engineers ](https://www.udemy.com/course/react-for-senior-engineers) Udemy Course.
+Based on [Advanced React for Enterprise: React for Senior Engineers ](https://www.udemy.com/course/react-for-senior-engineers) and [Webpack 5: Optimizing for Production](https://www.udemy.com/course/webpack-optimizing-for-production) Udemy Courses.
 
 ## Design Systems
 
@@ -215,5 +215,24 @@ npx lerna init
 }
 ```
 
+# React Notes
 
+## Utility Classes
+
+Automatically generating  spacing classes using `@each` in `map` pattern:
+
+```scss
+// import your $spacing map or foundations
+
+@each $size, $value in $spacing {
+
+    .dse-width-#{$size} {
+        width: $value
+    }
+
+    .dse-height-#{$size} {
+        height: $value
+    }
+}
+```
 
