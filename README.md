@@ -15,21 +15,24 @@ use scss `var()` to give a default but enable overriding
 Variables has nothing to do with your app. It is app-independent. They usually come from the Design System.
 
 - Colors
-    - Brand Colors
-    - Neutral Colors
-    - Utility Colors
+
+  - Brand Colors
+  - Neutral Colors
+  - Utility Colors
 
 - Typegraphy
-    - font families
-    - font sizes
-    - heading font sizes
-    - font weights
+
+  - font families
+  - font sizes
+  - heading font sizes
+  - font weights
 
 - Breakpoints
-    - breakpoints
+
+  - breakpoints
 
 - spacings
-    - 
+  -
 
 2. Define your `_colors`:
 
@@ -61,10 +64,10 @@ The `media-query mixin pattern`:
 
 ```scss
 @mixin tablet {
-    @media(min-width: map-get($breakpoints, 'md')){
-        @content
-    }
-};
+  @media (min-width: map-get($breakpoints, "md")) {
+    @content;
+  }
+}
 
 // .body {
 //     font-size: 12px;
@@ -78,31 +81,31 @@ The `spacings mixin pattern`:
 
 ```scss
 @mixin padding-top($space) {
-    padding-top: map-get($spacing, $space);
-};
+  padding-top: map-get($spacing, $space);
+}
 
 // @include padding-top('sm');
-  
+
 @mixin margin-top($space) {
-    margin-top: map-get($spacing, $space);
-};
+  margin-top: map-get($spacing, $space);
+}
 
 // @include margin-top('sm');
 ```
 
 6. Define your `_all.scss` to import everything.
 
-5. Define your `global.scss`
+7. Define your `global.scss`
 
 - foundation
 
 - base
-    - css reset: Normalize CSS - What is CSS Normalize ?
-    - root
+  - css reset: Normalize CSS - What is CSS Normalize ?
+  - root
 
 ## Formatting
 
-- Use [Stylelint](https://stylelint.io/user-guide/get-started ) and [Guilelines](https://www.npmjs.com/package/stylelint-config-sass-guidelines)
+- Use [Stylelint](https://stylelint.io/user-guide/get-started) and [Guilelines](https://www.npmjs.com/package/stylelint-config-sass-guidelines)
 
 ```bash
 npm install --save-dev stylelint stylelint-config-standard-scss stylelint-config-sass-guidelines stylelint-config-prettier stylelint-prettier prettier
@@ -118,16 +121,16 @@ npm install --save-dev prettier
 
 ```json
 {
-    "plugins": ["stylelint-prettier"],
-    "extends": [
-        "stylelint-config-sass-guidelines",
-        "stylelint-config-prettier",
-        "stylelint-prettier/recommended"
-    ],
-    // additional rules
-    "rules": {
-        "indentation": 2
-    },
+  "plugins": ["stylelint-prettier"],
+  "extends": [
+    "stylelint-config-sass-guidelines",
+    "stylelint-config-prettier",
+    "stylelint-prettier/recommended"
+  ],
+  // additional rules
+  "rules": {
+    "indentation": 2
+  }
 }
 ```
 
@@ -146,7 +149,7 @@ npm run lint-styles
 
 ## Configuring Husky Pre-Commit Hook
 
-1. Install 
+1. Install
 
 ```bash
 npm install --save-dev husky lint-staged
@@ -189,15 +192,12 @@ npx lerna init
 
 ```json
 {
-    "packages": [
-            "packages/*"
-    ],
-    "version": "0.0.0",
-    "npmClient": "npm",
-    "useWorkspaces": true,
-    "stream": true
+  "packages": ["packages/*"],
+  "version": "0.0.0",
+  "npmClient": "npm",
+  "useWorkspaces": true,
+  "stream": true
 }
-
 ```
 
 4. package.json
@@ -219,20 +219,22 @@ npx lerna init
 
 ## Utility Classes
 
-Automatically generating  spacing classes using `@each` in `map` pattern:
+Automatically generating spacing classes using `@each` in `map` pattern:
 
 ```scss
 // import your $spacing map or foundations
 
 @each $size, $value in $spacing {
+  .dse-width-#{$size} {
+    width: $value;
+  }
 
-    .dse-width-#{$size} {
-        width: $value
-    }
-
-    .dse-height-#{$size} {
-        height: $value
-    }
+  .dse-height-#{$size} {
+    height: $value;
+  }
 }
 ```
 
+# Webpack
+
+See `02-webpack/README.md`

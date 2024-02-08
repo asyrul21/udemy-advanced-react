@@ -268,7 +268,7 @@ plugins: [
 npm install  --save-dev css-loader style-loader
 ```
 
-(optional) use `MiniCssExtractPlugin` to minify css:
+or use `MiniCssExtractPlugin` to minify css:
 
 ```bash
 npm install --save-dev mini-css-extract-plugin
@@ -284,11 +284,16 @@ module: {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
+      // OR if you want to use MiniCssExtract plugin
+{
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
     ],
   },
 ```
 
-(optional) Add MiniCssExtract Plugin in `webpack.prod.config.js`
+3. (if you use MiniCssExtractPlugin) Add MiniCssExtract Plugin in `webpack.prod.config.js`
 
 ```js
 plugins: [
@@ -298,7 +303,7 @@ plugins: [
   ],
 ```
 
-3. Remove reference to style files in your `index.html`
+4. Remove reference to style files in your `index.html`
 
 ```html
 <html>
@@ -310,7 +315,7 @@ plugins: [
 </html>
 ```
 
-4. Import CSS in your `javascript` file:
+5. Import CSS in your `javascript` file:
 
 ```js
 import "../styles/index.css";
@@ -479,7 +484,7 @@ or
 
 2. Create a new optimized image file, and use the url to to that image in the img `src` prop - suitable for bigger image files
 
-## Basic Configuration
+### Basic Configuration
 
 To use image or icon in Javascript files:
 
@@ -663,4 +668,317 @@ new ImageMinimizerPlugin({
       },
     },
   }),
+```
+
+## Babel
+
+Translate recent Javascript syntax to older syntaxes, which can be compatible with old Browsers.
+
+Preset: Collection of multiple plugins.
+
+## Basic Configuration
+
+1. Install
+
+```
+npm install --save-dev @babel/core @babel/preset-env babel-loader
+```
+
+2. `.browserlist` configs. Babel `preset-env` uses the `.browserlist` file to decide what to translate:
+
+```.browserlist
+>0.25%
+```
+
+3. Babel Configuration
+
+```json
+{
+  "presets": [["@babel/preset-env"]]
+}
+```
+
+4. Configure Babel into Webpack in (common) config:
+
+```js
+module: {
+  rules: [
+    // ... ,
+    {
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: {
+        loader: "babel-loader",
+      },
+    },
+  ],
+},
+```
+
+## Polyfills
+
+Adding `polyfills` for missing features. For eg, some features are not avaible in certain browsers, like `Promise.any` etc.
+
+Polyfills are used to add these features to the browsers as a `polyfill`.
+
+Provide modern functionality to older browsers that dont natively support.
+
+### Configure
+
+IMPORTANT: `npm run build:prod` DOES NOT WORK.
+
+1. Install `corejs`
+
+```bash
+npm install --save-dev corejs
+```
+
+2. Configure `.babelrc`
+
+We need to tell Babel NOT to add Polyfills in Development mode, only for Production
+
+```json
+{
+  "env": {
+    "production": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "useBuiltIns": "usage",
+            "corejs": {
+              "version": 3,
+              "proposals": true
+            },
+            "debug": true
+          }
+        ]
+      ]
+    },
+    "dev": {
+      "presets": [["@babel/preset-env"]]
+    }
+  }
+}
+```
+
+3. Add environment variable in `package.json`
+
+```json
+"scripts": {
+    "build:dev": "BABEL_ENV=dev webpack serve --config webpack/webpack.dev.config.js --hot",
+    "build:prod": "BABEL_ENV=production webpack --config webpack/webpack.prod.config.js"
+  },
+```
+
+for Windows:
+
+```json
+set NODE_ENV=production&& <command>
+```
+
+or Install `cross-env`
+
+```bash
+npm install save-dev cross-env
+```
+
+`package.json`:
+
+```json
+cross-env NODE_ENV=production ...
+```
+
+## Configuring Typescript
+
+DOES NOT WORK
+
+## Source Maps
+
+Maps generated Javascript bundle to the original JS File.
+
+Helps with debugging.
+
+[All Dev Tools](https://webpack.js.org/configuration/devtool/)
+
+### Basic Configuration
+
+Add to config:
+
+```js
+devtool: "source-map",
+```
+
+Or To enable faster build time, add in (dev) config:
+
+```js
+devtool: "eval-source-map",
+```
+
+## Tree Shaking
+
+Eliminate unused code.
+
+IMPORTANT: Tree Shaking Only works with packages exported as `ECMAScript Modules` ie. `esm`
+
+[All Optimizations](https://webpack.js.org/configuration/optimization/)
+
+### Basic Configuration
+
+Add to config:
+
+```js
+optimization: {
+  usedExports: true;
+}
+```
+
+## Code Splitting
+
+To separate bundle to multiple chunks.
+
+### Basic Configuration
+
+### Strategy 1: Extract Huge Libraries into Seperate Bundles
+
+Use `split-chunks-plugin` built-in plugin.
+
+Add to (prod) config's `optimization`:
+
+```js
+optimization: {
+  splitChunks: {
+    cacheGroups: {
+      jquery: {
+        test: /[\\/]node_modules[\\/]jquery[\\/]/,
+        chunks: "initial" // initial | all | async,
+        name: 'jquery
+      },
+      bootstrap: {
+        test: /[\\/]node_modules[\\/]bootstrap[\\/]/,
+        chunks: 'initial,
+        name: 'bootstrap'
+      }
+    }
+  }
+}
+```
+
+### Strategy 2: Specify Criteria / Rules
+
+```js
+optimization: {
+  splitChunks: {
+    chunks: 'all',
+    maxSize: 140000, // if more than size, it will be split
+    minSize: 50000,
+    name(module, chunks, chacheGroupKey){
+      const filepathsarr = module.identifier().split('/')
+      return filepathsarr[filepathsarr.length -1]
+    }
+  }
+}
+```
+
+### Strategy 3: Put Node_Modules in Separate Bundle
+
+```js
+optimization: {
+  splitChunks: {
+    chunks: 'all',
+    maxSize: Infinity,
+    minSize: 0,
+    cacheGroups: {
+      node_modules: {
+        test: /[\\/]node_modules[\\/]jquery[\\/]/,
+        name: 'node_modules
+      }
+    }
+  }
+}
+```
+
+### Strategy 4: Create Bundle for Each Dependency
+
+```js
+optimization: {
+  splitChunks: {
+    chunks: 'all',
+    maxSize: Infinity,
+    minSize: 0,
+    cacheGroups: {
+      node_modules: {
+        test: /[\\/]node_modules[\\/]jquery[\\/]/,
+        name(module){
+          const packagename = module.context.match(/[\\/]node_modules[\\/](.*?)[\\/]|$/)[0]
+          return packagename;
+        }
+      }
+    }
+  }
+}
+```
+
+## Lazy Loading
+
+Lazy Loading technique:
+
+```javascript
+export function removeTodoEventHandler(event){
+  import('bootstrap').then(function({Modal}) => {
+    const id = getTodoId(event.target)
+    $('#modal-delete-button').data('todo-id', id)
+    const deleteTodoModal = Modal.getOrCreateInstance(
+      document.getElementById('modal-delete-todo)
+    )
+    deleteTodoModal.show()ß
+  })
+}
+```
+
+Lazy loading multiple modules in parallel:
+
+```javascript
+export function removeTodoEventHandler(event){
+  Promise.all([
+    import('bootstrap'), // webpackChunkName: 'bootstrap'
+    import('jquery') // webpackChunkName: 'jquery
+  ]).then(function([{Modal}, { default: $ }]) => {
+    const id = getTodoId(event.target)
+    $('#modal-delete-button').data('todo-id', id)
+    const deleteTodoModal = Modal.getOrCreateInstance(
+      document.getElementById('modal-delete-todo)
+    )
+    deleteTodoModal.show()ß
+  })
+}
+```
+
+webpack config:
+
+```js
+optimization: {
+  splitChunks: {
+    chunks: 'all',
+    maxSize: Infinity,
+    minSize: 0,
+    cacheGroups: {
+      node_modules: {
+        test: /[\\/]node_modules[\\/]jquery[\\/]/,
+        name: 'node_modules',
+        chunks: 'initial
+      },
+      /**
+       * Lazy Loading
+      */
+     async: {
+      test: /[\\/]node_modules[\\/]/,
+      chunks: 'async',
+      name(module, chunks){
+        return chunks.map(chunk => chunk.name).join('-')
+      }
+     }
+    }
+  }
+}
 ```

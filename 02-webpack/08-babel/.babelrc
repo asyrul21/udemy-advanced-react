@@ -1,0 +1,19 @@
+{
+  "env": {
+    "production": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "useBuiltIns": "usage",
+            "corejs": 3,
+            "debug": true
+          }
+        ]
+      ]
+    },
+    "dev": {
+      "presets": [["@babel/preset-env"]]
+    }
+  }
+}
