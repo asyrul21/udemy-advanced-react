@@ -1,6 +1,12 @@
 # Advanced React Guide
 
-Based on [Advanced React for Enterprise: React for Senior Engineers ](https://www.udemy.com/course/react-for-senior-engineers) and [Webpack 5: Optimizing for Production](https://www.udemy.com/course/webpack-optimizing-for-production) Udemy Courses.
+Based on the following Udemy Courses:
+
+1. [Advanced React for Enterprise: React for Senior Engineers ](https://www.udemy.com/course/react-for-senior-engineers)
+
+2. [Webpack 5: Optimizing for Production](https://www.udemy.com/course/webpack-optimizing-for-production)
+
+3. [Nginx Fundamentals](https://www.udemy.com/course/nginx-fundamentals)
 
 ## Design Systems
 
@@ -31,8 +37,7 @@ Variables has nothing to do with your app. It is app-independent. They usually c
 
   - breakpoints
 
-- spacings
-  -
+- ## spacings
 
 2. Define your `_colors`:
 

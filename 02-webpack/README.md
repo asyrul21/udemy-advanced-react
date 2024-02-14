@@ -1,5 +1,7 @@
 # Webpack Notes
 
+[Official Course Repo](https://github.com/vp-online-courses/webpack-optimization-for-production)
+
 ## Basic Setup
 
 1. NPM Init Project, to generate `package.json`
