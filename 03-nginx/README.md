@@ -244,7 +244,7 @@ http {
             #
             # enable rate limitting: implementation
             #
-            limit_req_zone=MYZONE burst=5 nodelay;
+            limit_req zone=MYAPPZONE burst=5 nodelay;
 
             #
             # Enabling Basic Auth on a route
